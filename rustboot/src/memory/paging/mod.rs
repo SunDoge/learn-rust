@@ -9,14 +9,15 @@ pub struct Page {
     number: usize,
 }
 
-pub struct Entry(u64);
-
-impl Entry {
-    pub fn is_unused(&self) -> bool {
-        self.0 == 0
+impl Page {
+    pub fn containing_address(address: VirtualAddress) -> Page {
+        assert!(address < 0x0000_8000_0000_0000 || address >= 0xffff_8000_0000_0000,
+                "invalid address: 0x{:x}",
+                address);
+        Page { number: address / PAGE_SIZE }
     }
 
-    pub fn set_unused(&mut self) {
-        self.0 = 0;
+    fn start_address(&self) -> usize {
+        self.number * PAGE_SIZE
     }
 }
