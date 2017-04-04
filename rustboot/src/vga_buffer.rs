@@ -7,10 +7,11 @@ const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
 pub static WRITER: Mutex<Writer> = Mutex::new(Writer {
-    column_position: 0,
-    color_code: ColorCode::new(Color::LightGreen, Color::Black),
-    buffer: unsafe { Unique::new(0xb8000 as *mut _) },
-});
+                                                  column_position: 0,
+                                                  color_code: ColorCode::new(Color::LightGreen,
+                                                                             Color::Black),
+                                                  buffer: unsafe { Unique::new(0xb8000 as *mut _) },
+                                              });
 
 macro_rules! println {
     ($fmt:expr) => (print!(concat!($fmt, "\n")));
@@ -38,22 +39,22 @@ pub fn clear_screen() {
 #[allow(dead_code)]
 #[repr(u8)]
 pub enum Color {
-    Black      = 0,
-    Blue       = 1,
-    Green      = 2,
-    Cyan       = 3,
-    Red        = 4,
-    Magenta    = 5,
-    Brown      = 6,
-    LightGray  = 7,
-    DarkGray   = 8,
-    LightBlue  = 9,
+    Black = 0,
+    Blue = 1,
+    Green = 2,
+    Cyan = 3,
+    Red = 4,
+    Magenta = 5,
+    Brown = 6,
+    LightGray = 7,
+    DarkGray = 8,
+    LightBlue = 9,
     LightGreen = 10,
-    LightCyan  = 11,
-    LightRed   = 12,
-    Pink       = 13,
-    Yellow     = 14,
-    White      = 15,
+    LightCyan = 11,
+    LightRed = 12,
+    Pink = 13,
+    Yellow = 14,
+    White = 15,
 }
 
 pub struct Writer {
@@ -76,19 +77,17 @@ impl Writer {
 
                 let color_code = self.color_code;
                 self.buffer().chars[row][col].write(ScreenChar {
-                    ascii_character: byte,
-                    color_code: color_code,
-                });
-                    
+                                                        ascii_character: byte,
+                                                        color_code: color_code,
+                                                    });
+
                 self.column_position += 1;
             } 
         }
     }
 
     fn buffer(&mut self) -> &mut Buffer {
-        unsafe {
-            self.buffer.get_mut()
-        }
+        unsafe { self.buffer.get_mut() }
     }
 
     fn new_line(&mut self) {
@@ -99,7 +98,7 @@ impl Writer {
                 buffer.chars[row - 1][col].write(character);
             }
         }
-        self.clear_row(BUFFER_HEIGHT-1);
+        self.clear_row(BUFFER_HEIGHT - 1);
         self.column_position = 0;
     }
 
@@ -162,6 +161,6 @@ struct Buffer {
 //     };
 
 //     writer.write_byte(b'H');
-//     writer.write_str("ello! "); 
+//     writer.write_str("ello! ");
 //     write!(writer, "The numbers are {} and {}", 42, 1.0/3.0);
 // }

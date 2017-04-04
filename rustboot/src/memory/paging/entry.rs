@@ -12,14 +12,12 @@ impl Entry {
     }
 
     pub fn flags(&self) -> EntryFlags {
-        EntryFlags::from_bit_truncate(self.0)
+        EntryFlags::from_bits_truncate(self.0)
     }
 
     pub fn pointed_frame(&self) -> Option<Frame> {
         if self.flags().contains(PRESENT) {
-            Some(Frame::containing_address(
-                self.0 as usize & 0x000fffff_fffff000
-            )) 
+            Some(Frame::containing_address(self.0 as usize & 0x000fffff_fffff000))
         } else {
             None
         }
